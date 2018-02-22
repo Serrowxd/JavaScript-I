@@ -9,6 +9,9 @@
 */
 
 const each = (elements, cb) => {
+  for ( let i = 0; i < elements.length; i++) {
+    cb(elements[i], i);
+  }
   // Do NOT use forEach to complete this function.
   // Iterates over a list of elements, yielding each in turn to the `cb` function.
   // This only needs to work with arrays.
@@ -20,6 +23,11 @@ const map = (elements, cb) => {
   // Do NOT use .map, to complete this function.
   // Produces a new array of values by mapping each value in list through a transformation function (iteratee).
   // Return the new array.
+  const newArray = [];
+  for(let i=0 ; i < elements.length; i++) {
+    return newArray.push(cb(elements[i], i));
+  }
+  return newArray;
 };
 
 const reduce = (elements, cb, startingValue) => {
@@ -46,9 +54,21 @@ const filter = (elements, cb) => {
 /* STRETCH PROBLEM */
 
 const flatten = (elements) => {
-  // Flattens a nested array (the nesting can be to any depth).
-  // Example: flatten([1, [2], [3, [[4]]]]); => [1, 2, 3, 4];
+  let results = [];
+  each(elements, (item) => {
+    if (Array.isArray(item)) {
+      const nestedArray = flatten(item);
+      results = results.concat(nestedArray);
+    } else {
+      results.push(item);
+    }
+    // as long as item is an array, recurse
+    // push non-array type item into results
+  });
+  return results;
 };
+
+console.log(flatten([1, [2], [3, [[4]]]]));
 
 /* eslint-enable no-unused-vars, max-len */
 
